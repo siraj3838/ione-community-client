@@ -4,17 +4,18 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import useAxios from "../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { TbWorldCheck } from "react-icons/tb";
-import { FaUserFriends } from "react-icons/fa";
+import { FaUserFriends, FaUserSecret } from "react-icons/fa";
 import { FaHeart, FaUserLock } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import useAdminPost from "../../Hook/useAdminPost";
 
 const Home = () => {
     const { user, loading } = useContext(AuthContext);
     const myAxios = useAxios();
     const [asc, setAsc] = useState(false)
-    // const [allPost, setAllPost] = useState([])
+    const [adminPost] = useAdminPost();
     // const [publicPost, setPublicPost] = useState([])
     const navigate = useNavigate();
     const { data: userProfile = {} } = useQuery({
@@ -37,7 +38,7 @@ const Home = () => {
         },
     })
 
-    console.log(currentUser);
+    // console.log(currentUser);
     const { data: allPosts = [], refetch } = useQuery({
         queryKey: ['allPost', user?.email, asc],
         queryFn: async () => {
@@ -96,13 +97,26 @@ const Home = () => {
         // console.log(post);
     }
 
+
+    const reportPost = (post) => {
+        const report = 'report';
+        const reports = { report }
+        myAxios.put(`/userPost/report/${post?._id}`, reports)
+            .then(res => {
+                if (res.data.modifiedCount > 0) {
+                    toast.success('Your Report Are Send Admin')
+                    refetch();
+                }
+            })
+    }
+
     return (
         <div>
             <Helmet>
                 <title>Ione Community || Home</title>
             </Helmet>
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5 lg:pt-16 md:pt-48 px-5 lg:px-2">
-                <div className="lg:col-span-1 md:col-span-1 my-5 md:top-14 md:z-30 md:pt-10 lg:pt-0 lg:top-16 md:fixed">
+                <div className="lg:col-span-1 md:col-span-1 my-5 md:top-14 md:z-30 pt-6 md:pt-10 lg:pt-0 lg:top-16 md:fixed">
                     <div className='w-full'>
                         <div className="relative hidden md:block">
                             {
@@ -154,7 +168,7 @@ const Home = () => {
 
 
                 </div>
-                <div className="col-span-3 md:ml-[330px] md:-mt-10 lg:-mt-0">
+                <div className="col-span-3 md:ml-[310px] md:-mt-10 lg:-mt-0">
                     {
                         user ? <>
                             {
@@ -192,6 +206,11 @@ const Home = () => {
                                             <div tabIndex={0} role="button" className=""><BsThreeDotsVertical></BsThreeDotsVertical></div>
                                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                                 <li onClick={() => savePost(post)}><a>Save</a></li>
+                                                {
+                                                    post?.report == 'report' ? <li><a>Report Pending</a></li>
+                                                        :
+                                                        <li onClick={() => reportPost(post)}><a>Report</a></li>
+                                                }
                                             </ul>
                                         </div>
                                     </div>
@@ -280,8 +299,27 @@ const Home = () => {
                             </>
                     }
                 </div>
-                <div className="col-span-1">
-
+                <div className="col-span-1 mt-5">
+                    <h3 className="text-2xl border-b-2 border-black pb-2 mb-3">Latest Job Post</h3>
+                    <div className="space-y-3">
+                        {
+                            adminPost.map(aPost => <div className="border-2 shadow-md bg-white" key={aPost._id}>
+                                <Link to={`${aPost?.jobUrl}`} target="_blank">
+                                    <div className="flex gap-2">
+                                        <img className="w-40 h-24" src={aPost.image} alt="" />
+                                        <div className="space-y-2 mt-1">
+                                            <h2 className="text-gray-500">{aPost?.time.slice(5,)}</h2>
+                                            <div className="flex justify-center">
+                                                <Link to={`${aPost?.jobUrl}`} target="_blank">
+                                                    <button className="hover:scale-110 transition-all text-base-200 font-bold bg-blue-400 px-3 py-1.5 rounded-md">Visit</button>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>)
+                        }
+                    </div>
                 </div>
             </div>
         </div>

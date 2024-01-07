@@ -9,6 +9,9 @@ import Notification from "../Pages/Notification/Notification";
 import Profile from "../Pages/Profile/Profile";
 import SavedPostDetails from "../components/SavedPostDetails";
 import SearchProfileDetails from "../components/SearchProfileDetails";
+import AdminNotification from "../Pages/AdminNotification";
+import PrivateRouter from "./PrivateRouter/PrivateRouter";
+import AdminProfile from "../Pages/AdminProfile/AdminProfile";
 
 const MainRouter = createBrowserRouter([
     {
@@ -38,8 +41,16 @@ const MainRouter = createBrowserRouter([
                 element: <Notification></Notification>
             },
             {
+                path: '/adminNotification',
+                element: <PrivateRouter><AdminNotification></AdminNotification></PrivateRouter>
+            },
+            {
                 path: '/profile',
                 element: <Profile></Profile>
+            },
+            {
+                path: '/adminProfile',
+                element: <AdminProfile></AdminProfile>
             },
             {
                 path: '/savedPostDetails/:id',

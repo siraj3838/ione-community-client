@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxios from "../../Hook/useAxios";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../Providers/AuthProvider";
 import { FaLinkedin, FaPlus } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -9,21 +7,23 @@ import { IoIosAddCircle } from "react-icons/io";
 import { FaTwitter, FaUserEdit } from "react-icons/fa";
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { LiaNotesMedicalSolid } from "react-icons/lia";
-import EditBanner from "./EditBanner";
 import { FaFacebook } from "react-icons/fa";
-import CreatePost from "./CreatePost";
 import { NavLink } from "react-router-dom";
 import { FaArrowTurnDown } from "react-icons/fa6";
 import { FaLevelUpAlt } from "react-icons/fa";
-import UsersSavePost from "./UsersSavePost";
+import { AuthContext } from "../../Providers/AuthProvider";
+import useAxios from "../../Hook/useAxios";
 import useSavePost from "../../Hook/useSavePost";
+import EditBanner from "../Profile/EditBanner";
+import UsersSavePost from "../Profile/UsersSavePost";
+import AdminCreatePost from "./AdminCreatePost";
 
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 
-const Profile = () => {
+const AdminProfile = () => {
     const [upInput, setUpInput] = useState(false);
     const [upSave, setUpSave] = useState(false);
     const { user, resetPassword, loading } = useContext(AuthContext);
@@ -140,8 +140,8 @@ const Profile = () => {
 
 
     return (
-        <div className="pt-48 md:pt-20">
-            <div className="lg:relative w-full max-w-screen-xl mx-auto">
+        <div className="pt-48 md:pt-20 max-w-screen-xl mx-auto">
+            <div className="lg:relative w-full">
                 {
                     userProfile?.banner ? <div className="hero w-full" style={{ backgroundImage: `url(${userProfile?.banner?.banner})` }}>
                         <div className="hero-overlay bg-opacity-60"></div>
@@ -206,7 +206,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className="grid lg:grid-cols-4 gap-4 bg-slate-100 p-6 mt-3 lg:mt-44">
-                <div className="col-span-1 p-3 bg-slate-50 min-h-screen rounded ml-10 md:ml-0 md:px-[235px] lg:px-5">
+                <div className="md:col-span-1 w-full p-3 bg-slate-50 min-h-screen rounded ml-10 md:ml-0 md:px-[235px] lg:px-5">
                     <h2 className="font-bold mb-4">About</h2>
                     {userProfile?.bio?.bio ? <>
                         <h4 className="mb-3 border-2 py-3 px-3">{userProfile?.bio?.bio}</h4>
@@ -292,8 +292,8 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-3 p-3 bg-slate-50 min-h-screen rounded mt-36 md:mt-48 lg:mt-0">
-                    <CreatePost></CreatePost>
+                <div className="col-span-3 p-3 bg-slate-50 min-h-screen rounded mt-36 md:mt-0 lg:mt-0">
+                    <AdminCreatePost></AdminCreatePost>
                 </div>
             </div>
 
@@ -301,4 +301,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default AdminProfile;
