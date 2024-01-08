@@ -146,7 +146,7 @@ const AdminProfile = () => {
                     userProfile?.banner ? <div className="hero w-full" style={{ backgroundImage: `url(${userProfile?.banner?.banner})` }}>
                         <div className="hero-overlay bg-opacity-60"></div>
                         <div className="hero-content text-center text-neutral-content">
-                            <div className="max-w-md py-28">
+                            <div className="max-w-md py-40">
 
 
                             </div>

@@ -34,11 +34,11 @@ const MainRouter = createBrowserRouter([
             },
             {
                 path: '/message',
-                element: <Message></Message>
+                element: <PrivateRouter><Message></Message></PrivateRouter>
             },
             {
                 path: '/notification',
-                element: <Notification></Notification>
+                element: <PrivateRouter><Notification></Notification></PrivateRouter>
             },
             {
                 path: '/adminNotification',
@@ -46,19 +46,19 @@ const MainRouter = createBrowserRouter([
             },
             {
                 path: '/profile',
-                element: <Profile></Profile>
+                element: <PrivateRouter><Profile></Profile></PrivateRouter>
             },
             {
                 path: '/adminProfile',
-                element: <AdminProfile></AdminProfile>
+                element: <PrivateRouter><AdminProfile></AdminProfile></PrivateRouter>
             },
             {
                 path: '/savedPostDetails/:id',
-                element: <SavedPostDetails></SavedPostDetails>
+                element: <PrivateRouter><SavedPostDetails></SavedPostDetails></PrivateRouter>
             },
             {
                 path: '/details/:id',
-                element: <SearchProfileDetails></SearchProfileDetails>
+                element: <PrivateRouter><SearchProfileDetails></SearchProfileDetails></PrivateRouter>
             }
         ]
     }

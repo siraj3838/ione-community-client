@@ -22,6 +22,7 @@ const Register = () => {
 
     const onSubmit = async (data) => {
         console.log(data)
+        const date = new Date();
         // reset();
         const imageFile = { image: data.image[0] }
         const resImage = await myAxios.post(image_hosting_api, imageFile, {
@@ -37,7 +38,7 @@ const Register = () => {
                     console.log(loggedUser);
                     updateUserProfile(data.name, resImage.data.data.display_url)
                         .then(() => {
-                            const userInfo = { name: data?.name, email: data?.email, photoURL: resImage.data.data.display_url }
+                            const userInfo = { name: data?.name, email: data?.email, time: date, photoURL: resImage.data.data.display_url }
                             navigate('/');
                             reset();
                             toast.success('Register Successfully')

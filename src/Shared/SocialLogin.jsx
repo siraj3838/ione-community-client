@@ -9,14 +9,17 @@ const SocialLogin = () => {
     const { googleLoggedIn } = useContext(AuthContext);
     const myAxios = useAxios();
     const navigate = useNavigate();
+    const date = new Date();
 
     const handleGoogleLogin = () => {
         googleLoggedIn()
             .then(res => {
-                // console.log(res.user);
+                console.log(res.user);
                 const userInfo = {
                     email: res.user?.email,
-                    name: res.user?.displayName
+                    name: res.user?.displayName,
+                    time: date,
+                    photoURL: res.user?.photoURL
                 }
                 myAxios.post('/users', userInfo)
                     .then(res => {

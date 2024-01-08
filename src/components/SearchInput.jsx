@@ -3,6 +3,7 @@ import './save.css'
 import { AuthContext } from '../Providers/AuthProvider';
 import useAxios from '../Hook/useAxios';
 import { useQuery } from '@tanstack/react-query';
+
 const SearchInput = () => {
     function myFunction() {
         refetch()
@@ -14,7 +15,7 @@ const SearchInput = () => {
     const { data: allUsers = [], refetch } = useQuery({
         queryKey: ['filters', user?.email, asc],
         queryFn: async () => {
-            const res = await myAxios.get('/users')
+            const res = await myAxios.get(`/usersSort?sort=${asc ? '' : 'asc'}`)
             const findUser = res?.data?.filter(us => us.email != user?.email)
             return findUser;
         },
@@ -41,14 +42,14 @@ const SearchInput = () => {
     return (
         <div>
             <div className="dropdown w-full">
-                <button onClick={()=>myFunction()} className="dropbtn w-full"> <input className='w-full' type="text" placeholder="Search.." id="myInput" onKeyUp={filterFunction} /></button>
+                <button onClick={() => myFunction()} className="dropbtn w-full"> <input className='w-full' type="text" placeholder="Search.." id="myInput" onKeyUp={filterFunction} /></button>
                 <div id="myDropdown" className="dropdown-content">
-                    
-                   {
-                    user ? allUsers.map(users => <a key={users._id} href={`/details/${users._id}`}><p className='flex items-center gap-2'><img className='w-10 h-10 rounded-full' src={users?.photoURL} alt="" />{users?.name}</p></a>)
-                    :
-                    allUsers.map(users => <a key={users._id}><p className='flex items-center gap-2'><img className='w-10 h-10 rounded-full' src={users?.photoURL} alt="" />{users?.name}</p></a>)
-                   }
+
+                    {
+                        user ? allUsers.map(users => <a key={users._id} href={`/details/${users._id}`}><p className='flex items-center gap-2'><img className='w-10 h-10 rounded-full' src={users?.photoURL} alt="" />{users?.name}</p></a>)
+                            :
+                            allUsers.map(users => <a key={users._id}><p className='flex items-center gap-2'><img className='w-10 h-10 rounded-full' src={users?.photoURL} alt="" />{users?.name}</p></a>)
+                    }
                 </div>
             </div>
         </div>
